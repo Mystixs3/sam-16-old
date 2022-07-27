@@ -1,0 +1,9 @@
+# Binaries folder
+bin/
+# IDE Stuff
+.vscode/
+# I just make this file when testing stuff
+test.asm
+
+
+a.out
