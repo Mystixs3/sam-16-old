@@ -15,3 +15,8 @@ By default the output file is `./out`
 
 Use `./bin/disasm <input file> <output file (optional)>`
 By default the output file is `./out.asm`
+
+## Emulator
+
+Use `./bin/emu <input file>`
+Then use ENTER to step the emulator

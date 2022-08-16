@@ -2,8 +2,9 @@
 
 - 16 Bits
 - Big endian
-- 10 Registers (0-8 are general purpose, 9 is the flags register)
+- 10 Registers (0-9)
 - 64 KiB of memory
+- Return addr, stack pointer and program counter are stored in their own register style thing
 
 === INSTRUCTIONS ===
 
@@ -30,34 +31,34 @@ Each instruction is 4 octets long, 1 opcode octet and 3 data octets.
 14 - JMPL ADDR		0x0D	{ MEM ADDR }	0x00	: Sets the program counter to an address in memory, jumping there, as long as the less than bit is 1. 
 15 - JMPE ADDR		0x0E	{ MEM ADDR }	0x00	: Sets the program counter to an address in memory, jumping there, as long as the equal bit is 1. 
 16 - JMPG ADDR		0x0F	{ MEM ADDR }	0x00	: Sets the program counter to an address in memory, jumping there, as long as the greater than bit is 1. 
-17 - JUMPC ADDR		0x10	{ MEM ADDR }	0x00	: Sets the program counter to an address in memory, jumping there, as long as the carry bit is 1. 
-18 - RET 			0x11	0x00	0x00	0x00	: Returns to the address after the previous JMP instruction
+17 - RET 			0x10	0x00	0x00	0x00	: Returns to the address after the previous JMP instruction
 
-19 - CMP REG REG 	0x12	REG 	REG 	0x00	: Compares two registers and sets the flag registers accordingly
-20 - CLF			0x13	0x00	0x00	0x00	: Clears the flags register
+18 - CMP REG REG 	0x11	REG 	REG 	0x00	: Compares two registers and sets the flag registers accordingly
+19 - CLF			0x12	0x00	0x00	0x00	: Clears the flags register
 
-21 - AND REG REG	0x14	REG		REG		0x00	: Performs a bitwise AND on two registers
-22 - OR REG REG		0x15	REG		REG		0x00	: Performs a bitwise OR on two registers
-23 - NOT REG REG	0x16	REG		REG		0x00	: Performs a bitwise NOT on two registers
-24 - XOR REG REG 	0x17	REG		REG		0x00	: Performs a bitwise XOR on two registers
+20 - AND REG REG	0x13	REG		REG		0x00	: Performs a bitwise AND on two registers
+21 - OR REG REG		0x14	REG		REG		0x00	: Performs a bitwise OR on two registers
+22 - NOT REG		0x15	REG		REG		0x00	: Performs a bitwise NOT on a registers
+23 - XOR REG REG 	0x16	REG		REG		0x00	: Performs a bitwise XOR on two registers
+24 - LSHIFT REG VAL	0x17	REG		{   VALUE   }	: Performs a left shift on a register by VAL bits
+25 - RSHIFT REG VAL	0x18	REG		{   VALUE   }	: Performs a right shift on a register by VAL bits
 
-=== FLAGS REGISTER ===
+26 - INC REG		0x19	REG		0x00	0x00	: Increments a register
+27 - DEC REG		0x20	REG		0x00	0x00	: Decrements a register
 
-1st bit = Less than
-2nd bit = Equal to 	 
-3rd bit = Greater than
-4th bit = Carry
+=== FLAGS ===
+
+Less than
+Equal to 	 
+Greater than
 
 === MEMORY LAYOUT ===
 
 64 Kib of memory
 
-0x0000 -> 0xFDFA	: General-purpose RAM
-0xFDFB -> 0xFEFB	: Display memory
-0xFEFC -> 0xFFFC	: Stack
-0xFFFD				: Stack Pointer (SP)
-0xFFFE				: Return Address (Used for the RET function)
-0xFFFF				: Program Counter (PC)
+0x0000 -> 0xFDFE	: General-purpose
+0xFDFF -> 0xFEFE	: Stack
+0xFEFF -> 0xFFFF	: Display
 
 === ASSEMBLY ===
 Use the $ prefix when talking about addresses in memory.

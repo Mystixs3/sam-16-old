@@ -1,9 +1,9 @@
 CC = gcc
 CCFLAGS = -O2
 
-.PHONY: all asm disasm libasm clean
+.PHONY: all asm disasm emu libasm clean
 
-all: asm disasm
+all: asm disasm emu
 
 asm:
 	mkdir -p bin
@@ -12,6 +12,10 @@ asm:
 disasm:
 	mkdir -p bin
 	$(CC) $(CCFLAGS) -o bin/disasm asm/libasm.c asm/disasm.c 
+
+emu:
+	mkdir -p bin
+	$(CC) $(CCFLAGS) -o bin/emu asm/libasm.c emu/emu.c 
 
 libasm: 
 	mkdir -p bin

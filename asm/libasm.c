@@ -115,55 +115,81 @@ Instruction assemble(Mnemonic input)
 	//}
 	//if (!strcmp(input.inst, "JMPG")) {
 	//}
-	//if (!strcmp(input.inst, "JMPC")) {
-	//}
 
 	if (!strcmp(input.inst, "RET")) {
-		output.opcode = 0x11;
+		output.opcode = 0x10;
 		output.data1 = 0x00;
 		output.data2 = 0x00;
 		output.data3 = 0x00;
 		return output;
 	}
 	if (!strcmp(input.inst, "CMP")) {
-		output.opcode = 0x12;
+		output.opcode = 0x11;
 		output.data1 = atoi(&input.arg1[1]);
 		output.data2 = atoi(&input.arg2[1]);
 		output.data3 = 0x00;
 		return output;
 	}
 	if (!strcmp(input.inst, "CLF")) {
-		output.opcode = 0x13;
+		output.opcode = 0x12;
 		output.data1 = 0x00;
 		output.data2 = 0x00;
 		output.data3 = 0x00;
 		return output;
 	}
 	if (!strcmp(input.inst, "AND")) {
-		output.opcode = 0x14;
+		output.opcode = 0x13;
 		output.data1 = atoi(&input.arg1[1]);
 		output.data2 = atoi(&input.arg2[1]);
 		output.data3 = 0x00;
 		return output;
 	}
 	if (!strcmp(input.inst, "OR")) {
-		output.opcode = 0x15;
+		output.opcode = 0x14;
 		output.data1 = atoi(&input.arg1[1]);
 		output.data2 = atoi(&input.arg2[1]);
 		output.data3 = 0x00;
 		return output;
 	}
 	if (!strcmp(input.inst, "NOT")) {
+		output.opcode = 0x15;
+		output.data1 = atoi(&input.arg1[1]);
+		output.data2 = 0x00;
+		output.data3 = 0x00;
+		return output;
+	}
+	if (!strcmp(input.inst, "XOR")) {
 		output.opcode = 0x16;
 		output.data1 = atoi(&input.arg1[1]);
 		output.data2 = atoi(&input.arg2[1]);
 		output.data3 = 0x00;
 		return output;
 	}
-	if (!strcmp(input.inst, "XOR")) {
+	if (!strcmp(input.inst, "LSHIFT")) {
 		output.opcode = 0x17;
 		output.data1 = atoi(&input.arg1[1]);
-		output.data2 = atoi(&input.arg2[1]);
+		output.data2 = (atoi(input.arg2+1) >> 8) & 0xFF;
+		output.data3 = atoi(input.arg2+1) & 0xFF;
+		return output;
+	}
+	if (!strcmp(input.inst, "RSHIFT")) {
+		output.opcode = 0x18;
+		output.data1 = atoi(&input.arg1[1]);
+		output.data2 = (atoi(input.arg2+1) >> 8) & 0xFF;
+		output.data3 = atoi(input.arg2+1) & 0xFF;
+		return output;
+	}
+	if (!strcmp(input.inst, "INC")) {
+		output.opcode = 0x19;
+		output.data1 = atoi(&input.arg1[1]);
+		output.data2 = 0x00;
+		output.data3 = 0x00;
+		return output;
+	}
+	if (!strcmp(input.inst, "DEC")) {
+		output.opcode = 0x20;
+		output.data1 = atoi(&input.arg1[1]);
+		output.data2 = 0x00;
 		output.data3 = 0x00;
 		return output;
 	}
@@ -255,48 +281,70 @@ Mnemonic disassemble(Instruction input)
 	//}
 	//if (input.opcode == 0x0F) {
 	//}
-	//if (input.opcode == 0x10) {
-	//}
-	if (input.opcode == 0x11) {
+	if (input.opcode == 0x10) {
 		strcpy(output.inst, "RET");		
 		strcpy(output.arg1, "");
 		strcpy(output.arg2, "");
 		return output;
 	}
-	if (input.opcode == 0x12) {
+	if (input.opcode == 0x11) {
 		strcpy(output.inst, "CMP");
 		sprintf(output.arg1, "R%d", input.data1);
 		sprintf(output.arg2, "R%d", input.data2);
 		return output;
 	}
-	if (input.opcode == 0x13) {
+	if (input.opcode == 0x12) {
 		strcpy(output.inst, "CLF");		
 		strcpy(output.arg1, "");
 		strcpy(output.arg2, "");
 		return output;
 	}
-	if (input.opcode == 0x14) {
+	if (input.opcode == 0x13) {
 		strcpy(output.inst, "AND");
 		sprintf(output.arg1, "R%d", input.data1);
 		sprintf(output.arg2, "R%d", input.data2);
 		return output;
 	}
-	if (input.opcode == 0x15) {
+	if (input.opcode == 0x14) {
 		strcpy(output.inst, "OR");
 		sprintf(output.arg1, "R%d", input.data1);
 		sprintf(output.arg2, "R%d", input.data2);
 		return output;
 	}
-	if (input.opcode == 0x16) {
+	if (input.opcode == 0x15) {
 		strcpy(output.inst, "NOT");
+		sprintf(output.arg1, "R%d", input.data1);
+		strcpy(output.arg2, "");
+		return output;
+	}
+	if (input.opcode == 0x16) {
+		strcpy(output.inst, "XOR");
 		sprintf(output.arg1, "R%d", input.data1);
 		sprintf(output.arg2, "R%d", input.data2);
 		return output;
 	}
 	if (input.opcode == 0x17) {
-		strcpy(output.inst, "XOR");
+		strcpy(output.inst, "LSHIFT");
 		sprintf(output.arg1, "R%d", input.data1);
-		sprintf(output.arg2, "R%d", input.data2);
+		sprintf(output.arg1, "%d", (input.data1 << 8) + input.data2);
+		return output;
+	}
+	if (input.opcode == 0x18) {
+		strcpy(output.inst, "RSHIFT");
+		sprintf(output.arg1, "R%d", input.data1);
+		sprintf(output.arg1, "%d", (input.data1 << 8) + input.data2);
+		return output;
+	}
+	if (input.opcode == 0x19) {
+		strcpy(output.inst, "INC");
+		sprintf(output.arg1, "R%d", input.data1);
+		strcpy(output.arg2, "");
+		return output;
+	}
+	if (input.opcode == 0x20) {
+		strcpy(output.inst, "DEC");
+		sprintf(output.arg1, "R%d", input.data1);
+		strcpy(output.arg2, "");
 		return output;
 	}
 }

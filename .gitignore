@@ -5,5 +5,5 @@ bin/
 # I just make this file when testing stuff
 test.asm
 
-
+out
 a.out

@@ -3,6 +3,11 @@
 
 #include "libasm.h"
 
+typedef struct {
+	char label[20];
+	uint16_t addr; 
+} Label;
+
 int main(int argc, char const *argv[])
 {
 	char infilePath[50];
@@ -23,17 +28,19 @@ int main(int argc, char const *argv[])
 	// Open the input file
 	FILE *infile;
 	infile = fopen(infilePath, "r");
-	if (infile == NULL) { printf("Couldn't open %s", infilePath); return 0; }
+	if (infile == NULL) { printf("Couldn't open %s\n", infilePath); return 0; }
 
 	// Open the output file
 	FILE *outfile;
 	outfile = fopen(outfilePath, "wb");
-	if (outfile == NULL) { printf("Couldn't open %s", outfilePath); return 0; }
+	if (outfile == NULL) { printf("Couldn't open %s\n", outfilePath); return 0; }
 
 	int i;
 	Mnemonic input;
 	Instruction output;
 	char buff[50];
+
+	// TODO : Pre-parse the file here to get the labels
 
 	// Main loop
 	for (;;) {

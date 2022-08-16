@@ -24,12 +24,12 @@ int main(int argc, char const *argv[])
 	// Open the input file
 	FILE *infile;
 	infile = fopen(infilePath, "rb");
-	if (infile == NULL) { printf("Couldn't open %s", infilePath); return 0; }
+	if (infile == NULL) { printf("Couldn't open %s\n", infilePath); return 0; }
 
 	// Open the output file
 	FILE *outfile;
 	outfile = fopen(outfilePath, "w");
-	if (outfile == NULL) { printf("Couldn't open %s", outfilePath); return 0; }
+	if (outfile == NULL) { printf("Couldn't open %s\n", outfilePath); return 0; }
 
 	uint8_t buff[4];
 	Instruction input;
