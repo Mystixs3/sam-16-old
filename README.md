@@ -4,7 +4,7 @@ My homemade 16 bit CPU ISA with its own assembly language, assembler/disassemble
 
 ## Compiling
 
-Just run `make -j3` (As long as you have at least 3 threads on your device)
+Just run `make -j4` (As long as you have at least 4 threads on your device)
 
 ## Assembler
 
